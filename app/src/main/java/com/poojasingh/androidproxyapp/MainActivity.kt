@@ -3,15 +3,9 @@ package com.poojasingh.androidproxyapp
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.ActivityNotFoundException
-
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import android.R.id
-
-
-
-
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,32 +16,38 @@ class MainActivity : AppCompatActivity() {
         val action = intent?.action
         val data = intent?.data
 
-        watchYoutubeVideo("https://www.youtube.com/watch?v=_17j283asda")
+        watchUnavailableVideo("https://www.youtube.com/watch?v=_17j283asda")
         Thread.sleep(5000)
+        Log.d("TESTING", "sleep over")
         data?.let {
+            Log.d("TESTING", "calling method")
             watchYoutubeVideo(it.toString()) }
     }
 
-    fun watchYoutubeVideo(id: String) {
+    private fun watchUnavailableVideo(id: String) {
         val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("$id"))
-        val list = id.split("&")
+        startActivity(webIntent)
+    }
 
-        if (list.size <= 1) {
+    fun watchYoutubeVideo(id: String) {
+        Log.d("TESTING", "i'm working - $id")
+        val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("$id"))
+
+        val list = id?.split("&list=")
+        Log.d("TESTING", "working list - ${list} AND ${list?.size}")
+
+        val playlist = list[1]?.split("&")
+        val playlistId = playlist[0]
+
+        Log.d("TESTING", "playList id is - $playlistId")
+        val uri = Uri.parse("https://www.youtube.com/playlist?list=$playlistId")
+        val appIntent = Intent(Intent.ACTION_VIEW)
+        appIntent.data = uri
+        appIntent.setClassName("com.google.android.youtube", "com.google.android.youtube.app.froyo.phone.PlaylistActivity")
+        try {
+            startActivity(appIntent)
+        } catch (ex: ActivityNotFoundException) {
             startActivity(webIntent)
-        } else {
-            val playlist = list[1].split("=")
-            val playlistId = playlist[1]
-//        val appIntent = Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:MNJPaHRpn_k"))
-
-            val uri = Uri.parse("https://www.youtube.com/playlist?list=$playlistId")
-            val appIntent = Intent(Intent.ACTION_VIEW)
-            appIntent.data = uri
-            appIntent.setClassName("com.google.android.youtube", "com.google.android.youtube.app.froyo.phone.PlaylistActivity")
-            try {
-                startActivity(appIntent)
-            } catch (ex: ActivityNotFoundException) {
-                startActivity(webIntent)
-            }
         }
     }
 }
