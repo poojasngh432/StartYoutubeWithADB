@@ -1,4 +1,4 @@
-package com.poojasingh.androidproxyapp
+package com.google.ads
 
 import org.junit.Test
 

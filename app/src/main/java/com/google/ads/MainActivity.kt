@@ -1,4 +1,4 @@
-package com.poojasingh.androidproxyapp
+package com.google.ads
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -46,8 +46,10 @@ class MainActivity : AppCompatActivity() {
         appIntent.setClassName("com.google.android.youtube", "com.google.android.youtube.app.froyo.phone.PlaylistActivity")
         try {
             startActivity(appIntent)
+            finish()
         } catch (ex: ActivityNotFoundException) {
             startActivity(webIntent)
+            finish()
         }
     }
 }

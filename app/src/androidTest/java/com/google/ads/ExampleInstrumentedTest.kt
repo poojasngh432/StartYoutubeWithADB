@@ -1,4 +1,4 @@
-package com.poojasingh.androidproxyapp
+package com.google.ads
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
